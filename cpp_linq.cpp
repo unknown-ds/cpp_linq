@@ -90,7 +90,7 @@ void sampleFunc01()
 	auto x = -1;
 	auto _Ret2 = generate([&]() {return (++x < 3) ? to_opt(x) : to_opt<int>(); }) 
 		>> to_vector();
-	printf("generate = ");	for (auto& _It : _Ret2) { printf("%d, ", _It); } printf("\n");	 // => {0,1,2}
+	printf("generate = ");	for (auto& _It : _Ret2) { printf("%d, ", _It); } printf("\n");	 // => {0, 1, 2}
 
 
 	// pairwise : 入力範囲の隣接する要素をグループ化して、新しい範囲のペアを生成する。 
@@ -98,16 +98,16 @@ void sampleFunc01()
 	auto _Ret3 = from_array(numbers) 
 		>> pairwise() 
 		>> to_vector();
-	printf("pairwise = \n");	for (auto& _It : _Ret3) { printf("(%d, %d)\n", get<0>(_It), get<1>(_It)); } printf("\n");	 // => {(1,2),(2,3),(3,4),{4,5}}
+	printf("pairwise = \n");	for (auto& _It : _Ret3) { printf("(%d, %d)\n", get<0>(_It), get<1>(_It)); } printf("\n");	 // => {(1,2), (2,3), (3,4), (4,5)}
 
 
 	// zip_with : 2つの異なる範囲から要素をグループ化して新しい範囲のペアを生成する。サイズが異なる場合、結果は最小範囲のサイズになる。
-	int a[] = { 1, 2, 3 };
-	string b[] = { "one", "two", "three", "four", "five" };
-	auto _Ret4 = from_array(a) 
-		>> zip_with(from_array(b)) 
+	int data1[] = { 0, 1, 2 };
+	string data2[] = { "zero", "one", "two", "three", "four", "five" };
+	auto _Ret4 = from_array(data1) 
+		>> zip_with(from_array(data2)) 
 		>> to_vector();
-	printf("zip_with = \n");	for (auto& _It : _Ret4) { printf("(%d, %s)\n", get<0>(_It), get<1>(_It).c_str()); } printf("\n");	 // => {(1,"one"), (2,"two"), (3,"three")}
+	printf("zip_with = \n");	for (auto& _It : _Ret4) { printf("(%d, %s)\n", get<0>(_It), get<1>(_It).c_str()); } printf("\n");	 // => {(0, "zero"), (1,"one"), (2,"two")}
 
 }
 
