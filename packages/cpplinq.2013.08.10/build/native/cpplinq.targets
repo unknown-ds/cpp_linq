@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="cpplinq_init">
+  <PropertyGroup Label="Default initializers for properties">
+    <Linkage-cpplinq Condition="'$(Linkage-cpplinq)' == ''">dynamic</Linkage-cpplinq>
+    <CallingConvention-cpplinq Condition="'$(CallingConvention-cpplinq)' == ''">cdecl</CallingConvention-cpplinq>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)../..//build/native/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)../..//build/native/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\default-propertiesui.xml" />
+  </ItemGroup>
+  <UsingTask TaskName="cpplinq_Contains" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" TaskFactory="CodeTaskFactory">
+    <ParameterGroup>
+      <Text Output="false" ParameterType="System.String" />
+      <Library Output="false" Required="true" ParameterType="System.String" />
+      <Value Output="false" Required="true" ParameterType="System.String" />
+      <Result Output="true" ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Code>Result = ((Text ?? "").Split(';').Contains(Library) ) ? Value : String.Empty;</Code>
+    </Task>
+  </UsingTask>
+  <Target Name="cpplinq_init">
+    <cpplinq_Contains Text="Linkage-dynamic" Library="cpplinq" Value="dynamic" Condition="'$(Linkage-cpplinq)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-cpplinq" />
+    </cpplinq_Contains>
+    <cpplinq_Contains Text="Linkage-static" Library="cpplinq" Value="static" Condition="'$(Linkage-cpplinq)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-cpplinq" />
+    </cpplinq_Contains>
+    <cpplinq_Contains Text="Linkage-ltcg" Library="cpplinq" Value="ltcg" Condition="'$(Linkage-cpplinq)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-cpplinq" />
+    </cpplinq_Contains>
+    <cpplinq_Contains Text="Linkage-sxs" Library="cpplinq" Value="sxs" Condition="'$(Linkage-cpplinq)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-cpplinq" />
+    </cpplinq_Contains>
+    <cpplinq_Contains Text="CallingConvention-cdecl" Library="cpplinq" Value="cdecl" Condition="'$(CallingConvention-cpplinq)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-cpplinq" />
+    </cpplinq_Contains>
+    <cpplinq_Contains Text="CallingConvention-stdcall" Library="cpplinq" Value="stdcall" Condition="'$(CallingConvention-cpplinq)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-cpplinq" />
+    </cpplinq_Contains>
+    <cpplinq_Contains Text="CallingConvention-fastcall" Library="cpplinq" Value="fastcall" Condition="'$(CallingConvention-cpplinq)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-cpplinq" />
+    </cpplinq_Contains>
+    <cpplinq_Contains Text="CallingConvention-thiscall" Library="cpplinq" Value="thiscall" Condition="'$(CallingConvention-cpplinq)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-cpplinq" />
+    </cpplinq_Contains>
+    <cpplinq_Contains Text="CallingConvention-clrcall" Library="cpplinq" Value="clrcall" Condition="'$(CallingConvention-cpplinq)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-cpplinq" />
+    </cpplinq_Contains>
+  </Target>
+</Project>
