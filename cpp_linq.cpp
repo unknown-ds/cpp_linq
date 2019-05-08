@@ -80,20 +80,20 @@ void sampleFunc00()
 // 要素の作成
 void sampleFunc01()
 {
-	// singleton : この演算子は、引数として指定された単一の要素で範囲を作成します。
+	// singleton : 引数として指定された単一の要素で範囲を作成する。
 	auto _Ret1 = singleton(10)
 		>> to_vector();
 	printf("singleton = %d\n", _Ret1.at(0));	 // => {10}
 
 
-	// generate : 入力されたラムダ式から範囲を作成します。
+	// generate : 入力されたラムダ式から範囲を作成する。
 	auto x = -1;
 	auto _Ret2 = generate([&]() {return (++x < 3) ? to_opt(x) : to_opt<int>(); }) 
 		>> to_vector();
 	printf("generate = ");	for (auto& _It : _Ret2) { printf("%d, ", _It); } printf("\n");	 // => {0,1,2}
 
 
-	// pairwise : 入力範囲の隣接する要素をグループ化して、新しい範囲のペアを生成します。 
+	// pairwise : 入力範囲の隣接する要素をグループ化して、新しい範囲のペアを生成する。 
 	int numbers[] = { 1, 2, 3, 4, 5 };
 	auto _Ret3 = from_array(numbers) 
 		>> pairwise() 
@@ -101,7 +101,7 @@ void sampleFunc01()
 	printf("pairwise = \n");	for (auto& _It : _Ret3) { printf("(%d, %d)\n", get<0>(_It), get<1>(_It)); } printf("\n");	 // => {(1,2),(2,3),(3,4),{4,5}}
 
 
-	// zip_with : 2つの異なる範囲から要素をグループ化して新しい範囲のペアを生成します。サイズが異なる場合、結果は最小範囲のサイズになります。
+	// zip_with : 2つの異なる範囲から要素をグループ化して新しい範囲のペアを生成する。サイズが異なる場合、結果は最小範囲のサイズになる。
 	int a[] = { 1, 2, 3 };
 	string b[] = { "one", "two", "three", "four", "five" };
 	auto _Ret4 = from_array(a) 
@@ -192,24 +192,24 @@ void sampleFunc04()
 	auto _Ret1 = from_array(_Src1)
 		>> union_with(from_array(_Src2))
 		>> to_vector();
-	printf("_Ret1 = ");	for (auto& _It : _Ret1) { printf("%d, ", _It); } printf("\n");
+	printf("union_with = ");	for (auto& _It : _Ret1) { printf("%d, ", _It); } printf("\n");
 
 	// except : 差集合を求める。
 	auto _Ret2 = from_array(_Src1)
 		>> except(from_array(_Src2))
 		>> to_vector();
-	printf("_Ret2 = ");	for (auto& _It : _Ret2) { printf("%d, ", _It); } printf("\n");
+	printf("except1 = ");	for (auto& _It : _Ret2) { printf("%d, ", _It); } printf("\n");
 
 	auto _Ret3 = from_array(_Src2)
 		>> except(from_array(_Src1))
 		>> to_vector();
-	printf("_Ret3 = ");	for (auto& _It : _Ret3) { printf("%d, ", _It); } printf("\n");
+	printf("except2 = ");	for (auto& _It : _Ret3) { printf("%d, ", _It); } printf("\n");
 
 	// intersect_with : 積集合を求める。
 	auto _Ret4 = from_array(_Src1)
 		>> intersect_with(from_array(_Src2))
 		>> to_vector();
-	printf("_Ret4 = ");	for (auto& _It : _Ret4) { printf("%d, ", _It); } printf("\n");
+	printf("intersect_with = ");	for (auto& _It : _Ret4) { printf("%d, ", _It); } printf("\n");
 	
 }
 
@@ -238,27 +238,27 @@ void sampleFunc05()
 		>> orderby_ascending([](CData x) {return(x.Id); })
 		>> thenby_descending([](CData x) {return(x.Name.length()); })
 		>> to_list();
-	printf("_Ret1 = \n");	for (auto& _It : _Ret1) { printf("{%d, %s}\n", _It.Id, _It.Name.c_str()); } printf("\n");
+	printf("orderby_ascending = \n");	for (auto& _It : _Ret1) { printf("{%d, %s}\n", _It.Id, _It.Name.c_str()); } printf("\n");
 
 	// thenby_ascending : ソートした要素に対し、キーが等しい要素を昇順にソートする。
-	// thenby_descending :　ソートした要素に対し、キーが等しい要素を降順にソートする。 
+	// thenby_descending : ソートした要素に対し、キーが等しい要素を降順にソートする。 
 	auto _Ret2 = from(_Data)
 		>> orderby_ascending([](CData x) {return(x.Id); })
 		>> thenby_descending([](CData x) {return(x.Name.length()); })
 		>> to_list();
-	printf("_Ret2 = \n");	for (auto& _It : _Ret2) { printf("{%d, %s}\n", _It.Id, _It.Name.c_str()); } printf("\n");
+	printf("thenby_descending = \n");	for (auto& _It : _Ret2) { printf("{%d, %s}\n", _It.Id, _It.Name.c_str()); } printf("\n");
 
 	// orderby_descending : 要素を降順にソートする。
 	auto _Ret3 = from(_Data)
 		>> orderby_descending([](CData x) {return(x.Id); })
 		>> to_list();
-	printf("_Ret3 = \n");	for (auto& _It : _Ret3) { printf("{%d, %s}\n", _It.Id, _It.Name.c_str()); } printf("\n");
+	printf("orderby_descending = \n");	for (auto& _It : _Ret3) { printf("{%d, %s}\n", _It.Id, _It.Name.c_str()); } printf("\n");
 
 	// reverse : 要素を逆順にソートする。
 	auto _Ret4 = from(_Data)
 		>> reverse()
 		>> to_list();
-	printf("_Ret4 = \n");	for (auto& _It : _Ret4) { printf("{%d, %s}\n", _It.Id, _It.Name.c_str()); } printf("\n");
+	printf("reverse = \n");	for (auto& _It : _Ret4) { printf("{%d, %s}\n", _It.Id, _It.Name.c_str()); } printf("\n");
 
 }
 
@@ -286,7 +286,7 @@ void sampleFunc06()
 	auto _Ret1 = from(_Data)
 		>> select([](const auto& x) {return(x.Id + 10); })
 		>> to_list();
-	printf("_Ret1 = ");	for (auto& _It : _Ret1) { printf("%d, ", _It); } printf("\n");
+	printf("select = ");	for (auto& _It : _Ret1) { printf("%d, ", _It); } printf("\n");
 
 	
 	// select_many : 1つの要素から複数の要素に射影し、その結果を1つのシーケンスで返す。
@@ -296,7 +296,7 @@ void sampleFunc06()
 		return(from_copy(_dst));
 		})
 		>> to_list();
-	printf("_Ret2 = ");	for (auto& _It : _Ret2) { printf("%d, ", _It); } printf("\n");
+	printf("select_many = ");	for (auto& _It : _Ret2) { printf("%d, ", _It); } printf("\n");
 
 }
 
@@ -344,14 +344,14 @@ void sampleFunc07()
 			[](const auto& i) {return(i.Name); },
 			[](const auto& o, const auto& i) {return(make_tuple(o.Name, o.Param1, i.Param2)); })
 		>> to_list();
-	printf("_Ret1 = \n");	for (auto& _It : _Ret1) { printf("{%s, %d, %s}\n", get<0>(_It).c_str(), get<1>(_It), get<2>(_It).c_str() ); } printf("\n");
+	printf("join = \n");	for (auto& _It : _Ret1) { printf("{%s, %d, %s}\n", get<0>(_It).c_str(), get<1>(_It), get<2>(_It).c_str() ); } printf("\n");
 
 
 	// concat : 2つのシーケンスを連結する。
 	auto _Ret2 = from(_Outer1)
 		>> concat(from(_Outer2))
 		>> to_list();
-	printf("_Ret2 = \n");	for (auto& _It : _Ret2) { printf("{%s, %d}\n", _It.Name.c_str(), _It.Param1); } printf("\n");
+	printf("concat = \n");	for (auto& _It : _Ret2) { printf("{%s, %d}\n", _It.Name.c_str(), _It.Param1); } printf("\n");
 
 }
 
