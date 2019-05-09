@@ -9,6 +9,19 @@ using namespace std;
 using namespace cpplinq;
 
 
+string GetVecString(vector<int> _Vec)
+{
+	string _Str = "{";
+	for (int i = 0; i < _Vec.size();i++) {
+		_Str += to_string(_Vec[i]);
+		if(i < (int)_Vec.size()-1)_Str += ", ";
+	}
+	_Str += "}";
+	
+	return(_Str);
+}
+
+
 //--------------------------------------------------------------------------
 // 要素の取得
 void sampleFunc00()
@@ -40,38 +53,37 @@ void sampleFunc00()
 	auto _Ret4 = from_array(_Src2)
 		>> where([](int x) {return(x > 10); })
 		>> to_vector();
-	printf("where = ");	for (auto& _It : _Ret4) { printf("%d, ", _It); } printf("\n");
+	printf("where = %s\n", GetVecString(_Ret4).c_str());
 
 	// distinct : 重複を取り除く。
 	auto _Ret5 = from_array(_Src2)
 		>> distinct()
 		>> to_vector();
-	printf("distinct = ");	for (auto& _It : _Ret5) { printf("%d, ", _It);  } printf("\n");
+	printf("distinct = %s\n", GetVecString(_Ret5).c_str());
 
 	// skip : 先頭から指定数の要素をスキップして残りを返す。
 	auto _Ret6 = from_array(_Src2)
 		>> skip(5)
 		>> to_vector();
-	printf("skip = ");	for (auto& _It : _Ret6) { printf("%d, ", _It); } printf("\n");
+	printf("skip = %s\n", GetVecString(_Ret6).c_str());
 
 	// skip_while : 先頭から指定条件を満たさなくなるまでスキップし残りを返す。
 	auto _Ret7 = from_array(_Src2)
 		>> skip_while([](int x) {return(x <= 10); })
 		>> to_vector();
-	printf("skip_while = ");	for (auto& _It : _Ret7) { printf("%d, ", _It); } printf("\n");
+	printf("skip while = %s\n", GetVecString(_Ret7).c_str());
 
 	// take : 先頭から指定数の要素を返す。
 	auto _Ret8 = from_array(_Src2)
 		>> take(5)
 		>> to_vector();
-	printf("take = ");	for (auto& _It : _Ret8) { printf("%d, ", _It); } printf("\n");
+	printf("take = %s\n", GetVecString(_Ret8).c_str());
 
 	// take_while : 先頭から指定条件を満たす要素を返す。（条件を満たさない以降の要素は返さない）
 	auto _Ret9 = from_array(_Src2)
 		>> take_while([](int x) {return(x <= 10); })
 		>> to_vector();
-	printf("take_while = ");	for (auto& _It : _Ret9) { printf("%d, ", _It); } printf("\n");
-
+	printf("take while = %s\n", GetVecString(_Ret9).c_str());
 
 }
 
@@ -119,7 +131,7 @@ void sampleFunc01()
 		>> to_vector();
 	printf("reoeat = ");	for (auto& _It : _Ret6) { printf("%s, ", _It); } printf("\n");	// -> {"LINQ", "LINQ", "LINQ"}
 
-	// empty : 空の要素を作成する
+	// empty : 空の要素を作成する。
 	auto _Ret7 = empty<int>()
 		>> to_vector();
 	printf("empty = ");	for (auto& _It : _Ret7) { printf("%d, ", _It); } printf("\n");	// -> {}
@@ -207,25 +219,25 @@ void sampleFunc04()
 	auto _Ret1 = from_array(_Src1)
 		>> union_with(from_array(_Src2))
 		>> to_vector();
-	printf("union_with = ");	for (auto& _It : _Ret1) { printf("%d, ", _It); } printf("\n");
+	printf("union_with = %s\n", GetVecString(_Ret1).c_str());
 
 	// except : 差集合を求める。
 	auto _Ret2 = from_array(_Src1)
 		>> except(from_array(_Src2))
 		>> to_vector();
-	printf("except1 = ");	for (auto& _It : _Ret2) { printf("%d, ", _It); } printf("\n");
+	printf("except1 = %s\n", GetVecString(_Ret2).c_str());
 
 	auto _Ret3 = from_array(_Src2)
 		>> except(from_array(_Src1))
 		>> to_vector();
-	printf("except2 = ");	for (auto& _It : _Ret3) { printf("%d, ", _It); } printf("\n");
+	printf("except2 = %s\n", GetVecString(_Ret3).c_str());
 
 	// intersect_with : 積集合を求める。
 	auto _Ret4 = from_array(_Src1)
 		>> intersect_with(from_array(_Src2))
 		>> to_vector();
-	printf("intersect_with = ");	for (auto& _It : _Ret4) { printf("%d, ", _It); } printf("\n");
-	
+	printf("intersect_with = %s\n", GetVecString(_Ret4).c_str());
+
 }
 
 
