@@ -8,16 +8,28 @@
 using namespace std;
 using namespace cpplinq;
 
-
+// 結果確認用
 string GetVecString(vector<int> _Vec)
 {
 	string _Str = "{";
-	for (int i = 0; i < _Vec.size();i++) {
+	for (unsigned int i = 0; i < _Vec.size();i++) {
 		_Str += to_string(_Vec[i]);
-		if(i < (int)_Vec.size()-1)_Str += ", ";
+		if(i < _Vec.size()-1)_Str += ", ";
 	}
 	_Str += "}";
 	
+	return(_Str);
+}
+string GetLstString(list<int> _List)
+{
+	string _Str = "{";
+	int i = 0;
+	for (list<int>::iterator _It = _List.begin(); _It != _List.end(); _It++) {
+		_Str += to_string(*_It);
+		if (i++ < (int)_List.size() - 1)_Str += ", ";
+	}
+	_Str += "}";
+
 	return(_Str);
 }
 
@@ -313,7 +325,7 @@ void sampleFunc06()
 	auto _Ret1 = from(_Data)
 		>> select([](const auto& x) {return(x.Id + 10); })
 		>> to_list();
-	printf("select = ");	for (auto& _It : _Ret1) { printf("%d, ", _It); } printf("\n");
+	printf("select = %s\n", GetLstString(_Ret1).c_str());
 
 	
 	// select_many : 1つの要素から複数の要素に射影し、その結果を1つのシーケンスで返す。
@@ -323,7 +335,7 @@ void sampleFunc06()
 		return(from_copy(_dst));
 		})
 		>> to_list();
-	printf("select_many = ");	for (auto& _It : _Ret2) { printf("%d, ", _It); } printf("\n");
+	printf("select many = %s\n", GetLstString(_Ret2).c_str());
 
 }
 
